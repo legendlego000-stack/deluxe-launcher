@@ -1,0 +1,374 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#090b20">
+  <meta name="color-scheme" content="dark">
+  <meta name="description" content="Deluxe Launcher — удобный лаунчер Minecraft с профилями, настройкой Java, Fabric и каталогом клиентов.">
+  <meta property="og:title" content="Deluxe Launcher — Minecraft, но по-твоему">
+  <meta property="og:description" content="Удобный запуск Minecraft, версии Java, профили Fabric и каталог клиентов в одном месте.">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="assets/deluxe-bg.webp">
+  <meta name="twitter:card" content="summary_large_image">
+  <title>Deluxe Launcher — Minecraft, но по-твоему</title>
+
+  <link rel="icon" type="image/png" sizes="64x64" href="assets/deluxe-favicon.png">
+  <link rel="apple-touch-icon" href="assets/deluxe-touch-icon.png">
+
+  <!-- Hero art is the single biggest asset on the page: fetch it first, at full priority. -->
+  <link rel="preload" as="image" href="assets/deluxe-bg.webp" fetchpriority="high">
+
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #06070f;
+      --panel: rgba(10, 13, 34, .72);
+      --line: rgba(205, 216, 255, .16);
+      --text: #f8f8ff;
+      --muted: #b8c0de;
+      --cyan: #6be8ff;
+      --violet: #b48bff;
+      --crystal: #c78bff;
+      --gold: #ffd59a;
+      --green: #82f6c8;
+      --shadow: 0 24px 80px rgba(0, 0, 0, .4);
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-padding-top: 90px; }
+    body {
+      margin: 0; min-height: 100%; overflow-x: hidden; color: var(--text);
+      background: var(--bg); font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+      line-height: 1.6; isolation: isolate;
+    }
+    /* The brand artwork lives behind the whole site, not just the hero — it's the backdrop. */
+    body::before {
+      content: ""; position: fixed; z-index: -3; inset: -2% ;
+      background: url("assets/deluxe-bg.webp") center 24% / cover no-repeat;
+      transform: scale(1.02); animation: galaxy-drift 32s ease-in-out infinite alternate;
+    }
+    body::after {
+      content: ""; position: fixed; z-index: -2; inset: 0; pointer-events: none;
+      background:
+        radial-gradient(ellipse 55% 42% at 50% 20%, rgba(130, 90, 230, .14), transparent 60%),
+        linear-gradient(180deg, rgba(5, 6, 16, .22) 0%, rgba(5, 6, 16, .5) 46%, rgba(4, 5, 13, .86) 78%, rgba(4, 5, 12, .96) 100%);
+    }
+    a { color: inherit; }
+    button, a { -webkit-tap-highlight-color: transparent; }
+    .snow { position: fixed; z-index: 5; top: -15px; color: rgba(235, 249, 255, .88); pointer-events: none; user-select: none; text-shadow: 0 0 12px rgba(119, 218, 255, .8); animation: snowfall linear forwards; will-change: transform, opacity; }
+    .shell { width: min(1160px, calc(100% - 40px)); margin-inline: auto; }
+    .topbar { position: sticky; z-index: 20; top: 0; border-bottom: 1px solid rgba(255,255,255,.1); background: rgba(6, 7, 18, .62); backdrop-filter: blur(22px); -webkit-backdrop-filter: blur(22px); }
+    .topbar-inner { min-height: 76px; display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+    .brand { display: inline-flex; align-items: center; gap: 12px; text-decoration: none; flex: 0 0 auto; }
+    .brand img { width: 44px; height: 44px; object-fit: cover; border-radius: 11px; box-shadow: 0 0 0 1px rgba(200,170,255,.35), 0 0 20px rgba(150,110,255,.35); }
+    .brand-name { font-size: 15px; line-height: 1.08; font-weight: 950; letter-spacing: 1.2px; background: linear-gradient(100deg,#fff,var(--cyan),var(--crystal)); color: transparent; background-clip: text; -webkit-background-clip: text; }
+    .brand-name small { display: block; margin-top: 5px; color: #9ca7cb; font-size: 8px; letter-spacing: 2px; font-weight: 700; }
+    nav { display: flex; align-items: center; gap: 6px; }
+    nav a { color: #c5cce4; text-decoration: none; font-size: 13px; font-weight: 650; padding: 10px 13px; border-radius: 12px; transition: background .2s,color .2s,transform .2s; }
+    nav a:hover { background: rgba(255,255,255,.08); color: white; transform: translateY(-1px); }
+    .nav-download { border: 1px solid rgba(190,150,255,.4); background: rgba(150, 110, 255, .14); }
+    .hero { min-height: 690px; min-height: min(790px, calc(100svh - 76px)); display: flex; align-items: flex-end; padding-block: 76px 72px; position: relative; }
+    .hero-content { width: min(600px, 100%); padding: clamp(22px, 3.6vw, 38px); border-radius: 26px; border: 1px solid rgba(203,220,255,.2); background: linear-gradient(145deg, rgba(6,9,29,.82), rgba(9,12,34,.6)); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); box-shadow: var(--shadow), inset 0 1px rgba(255,255,255,.07); animation: hero-enter .85s cubic-bezier(.2,.8,.2,1) both; }
+    .eyebrow { display: inline-flex; align-items: center; gap: 9px; color: #d7ddf6; font-size: 11px; font-weight: 800; letter-spacing: 1px; }
+    .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green); box-shadow: 0 0 15px var(--green); animation: pulse 1.8s ease-in-out infinite; }
+    h1, h2, h3, p { margin-top: 0; }
+    h1 { max-width: 630px; margin: 18px 0 16px; font-size: clamp(35px, 6vw, 64px); line-height: .99; letter-spacing: -2.6px; font-weight: 950; }
+    .gradient { color: transparent; background: linear-gradient(100deg, var(--cyan), var(--crystal) 55%, var(--gold)); background-clip: text; -webkit-background-clip: text; }
+    .lead { max-width: 545px; color: #d1d6eb; font-size: clamp(15px, 1.7vw, 18px); margin-bottom: 23px; }
+    .actions { display: flex; align-items: center; flex-wrap: wrap; gap: 11px; }
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 9px; min-height: 48px; padding: 12px 19px; border: 1px solid rgba(220,230,255,.2); border-radius: 14px; color: white; background: rgba(255,255,255,.06); text-decoration: none; font-size: 14px; font-weight: 850; cursor: pointer; transition: transform .2s, box-shadow .2s, background .2s, border-color .2s; }
+    .btn:hover { transform: translateY(-2px); border-color: rgba(190,150,255,.55); box-shadow: 0 12px 32px rgba(0,0,0,.28); }
+    .btn:focus-visible, nav a:focus-visible, .brand:focus-visible { outline: 2px solid var(--cyan); outline-offset: 3px; }
+    .btn-primary { color: #0a0820; border-color: transparent; background: linear-gradient(108deg, #74e9ff, #c6a8ff 55%, #ffd59a); box-shadow: 0 8px 30px rgba(150,110,255,.25); }
+    .btn-primary:hover { box-shadow: 0 12px 38px rgba(150,110,255,.35); }
+    .micro-note { margin: 14px 0 0; color: #aeb8d8; font-size: 12px; }
+    .trust-row { display: flex; flex-wrap: wrap; gap: 9px; margin-top: 22px; }
+    .pill { display: inline-flex; align-items: center; gap: 7px; border-radius: 999px; border: 1px solid rgba(255,255,255,.12); padding: 7px 11px; background: rgba(255,255,255,.045); color: #d9e0f8; font-size: 11px; font-weight: 700; }
+    section.content-section { padding: 55px 0 62px; }
+    .section-top { max-width: 730px; margin: 0 auto 26px; text-align: center; }
+    .section-top h2 { margin: 9px 0 10px; font-size: clamp(27px, 4vw, 42px); line-height: 1.08; letter-spacing: -1.25px; }
+    .section-top p { color: var(--muted); margin-bottom: 0; }
+    .grid { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 15px; }
+    .card { position: relative; overflow: hidden; min-width: 0; padding: 23px; border-radius: 21px; border: 1px solid var(--line); background: linear-gradient(145deg, rgba(13,17,44,.82), rgba(9,12,31,.72)); box-shadow: 0 18px 50px rgba(0,0,0,.2), inset 0 1px rgba(255,255,255,.035); backdrop-filter: blur(12px); transition: transform .23s,border-color .23s,background .23s; }
+    .card::after { content: ""; position: absolute; width: 140px; height: 140px; border-radius: 50%; right: -80px; top: -80px; background: rgba(150,110,255,.12); filter: blur(1px); transition: transform .35s; pointer-events: none; }
+    .card:hover { transform: translateY(-4px); border-color: rgba(190,150,255,.3); background: linear-gradient(145deg, rgba(15,20,50,.91), rgba(9,12,31,.82)); }
+    .card:hover::after { transform: scale(1.55); }
+    .icon { width: 43px; height: 43px; display: grid; place-items: center; margin-bottom: 17px; border-radius: 14px; border: 1px solid rgba(190,150,255,.3); color: var(--crystal); background: rgba(150,110,255,.08); font-size: 21px; }
+    .card h3 { position: relative; z-index: 1; margin-bottom: 8px; font-size: 17px; }
+    .card p { position: relative; z-index: 1; margin-bottom: 0; color: var(--muted); font-size: 14px; }
+    .wide-card { display: grid; grid-template-columns: .9fr 1.1fr; gap: 26px; align-items: center; padding: clamp(23px,4vw,40px); }
+    .wide-card h2 { font-size: clamp(27px,4vw,42px); line-height: 1.06; letter-spacing: -1.4px; margin-bottom: 12px; }
+    .wide-card p { color: var(--muted); }
+    .steps { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 12px; }
+    .step { padding: 19px; border-radius: 16px; background: rgba(255,255,255,.035); border: 1px solid rgba(255,255,255,.1); }
+    .step b { display: block; margin-bottom: 6px; color: var(--cyan); font-size: 11px; letter-spacing: 1px; font-weight: 800; }
+    .step strong { display: block; margin-bottom: 5px; }
+    .step span { display: block; color: var(--muted); font-size: 13px; }
+    .security-list { display: grid; gap: 12px; margin: 20px 0 0; padding: 0; list-style: none; }
+    .security-list li { display: flex; align-items: flex-start; gap: 10px; color: #d9e0f7; font-size: 14px; }
+    .check { color: var(--green); font-weight: 950; }
+    .warning { color: #ecdfff; border: 1px solid rgba(190,150,255,.26); background: rgba(102,79,161,.14); padding: 15px 17px; border-radius: 14px; font-size: 12px; margin: 20px 0 0; }
+    .faq { max-width: 850px; margin: 0 auto; display: grid; gap: 10px; }
+    details { border-radius: 15px; background: rgba(9,12,32,.78); border: 1px solid var(--line); padding: 16px 19px; backdrop-filter: blur(10px); }
+    summary { cursor: pointer; font-weight: 800; }
+    summary:focus-visible { outline: 2px solid var(--cyan); outline-offset: 3px; border-radius: 6px; }
+    details p { margin: 10px 0 0; color: var(--muted); font-size: 14px; }
+    .final-cta { text-align: center; padding: clamp(25px,5vw,50px); }
+    .final-cta h2 { font-size: clamp(29px,4.5vw,49px); line-height: 1.03; letter-spacing: -1.8px; margin: 10px 0; }
+    .final-cta p { max-width: 570px; margin: 0 auto 20px; color: var(--muted); }
+    footer { padding: 25px 0 34px; border-top: 1px solid rgba(255,255,255,.09); color: #9ca7c9; font-size: 12px; }
+    .footer-inner { display: flex; justify-content: space-between; align-items: center; gap: 14px; flex-wrap: wrap; }
+    .footer-links { display: flex; gap: 14px; flex-wrap: wrap; }
+    .footer-links a { color: #c8d0ea; text-decoration: none; }
+    .footer-links a:hover { color: var(--cyan); }
+    .toast { position: fixed; z-index: 50; left: 50%; bottom: 24px; width: min(560px, calc(100% - 28px)); transform: translate(-50%, 18px); opacity: 0; pointer-events: none; padding: 14px 17px; border: 1px solid rgba(190,150,255,.32); border-radius: 14px; background: rgba(7,10,28,.95); box-shadow: var(--shadow); color: #eef5ff; font-size: 13px; transition: opacity .2s,transform .2s; }
+    .toast.show { opacity: 1; transform: translate(-50%, 0); }
+    .reveal { opacity: 0; transform: translateY(18px); transition: opacity .65s, transform .65s cubic-bezier(.2,.8,.2,1); }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    @keyframes snowfall { to { transform: translate3d(var(--drift), 110vh, 0) rotate(300deg); opacity: .12; } }
+    @keyframes pulse { 0%,100% { opacity: .7; transform: scale(.9); } 50% { opacity: 1; transform: scale(1.2); } }
+    @keyframes hero-enter { from { opacity: 0; transform: translateY(15px) scale(.99); } to { opacity: 1; transform: translateY(0) scale(1); } }
+    @keyframes galaxy-drift { from { transform: scale(1.02) translate3d(0,0,0); } to { transform: scale(1.08) translate3d(-1.1%,.8%,0); } }
+    @media (max-width: 860px) {
+      nav a:not(.nav-download) { display: none; }
+      .hero { min-height: 690px; align-items: flex-end; padding-top: 210px; }
+      .grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
+      .wide-card { grid-template-columns: 1fr; }
+      body::before { background-position: 32% 18%; }
+    }
+    @media (max-width: 560px) {
+      .shell { width: min(100% - 26px, 1160px); }
+      .topbar-inner { min-height: 66px; gap: 8px; }
+      .brand img { width: 37px; height: 37px; }
+      .brand-name { font-size: 12px; }
+      .brand-name small { font-size: 7px; }
+      .nav-download { font-size: 12px; padding: 9px 11px; }
+      .hero { min-height: 700px; min-height: calc(100svh - 66px); padding-block: 150px 28px; }
+      .hero-content { padding: 22px 18px; border-radius: 20px; }
+      h1 { font-size: clamp(36px, 11vw, 52px); letter-spacing: -1.6px; }
+      .btn { width: 100%; }
+      .actions { display: grid; grid-template-columns: 1fr; }
+      .trust-row { gap: 7px; }
+      .pill { font-size: 10px; }
+      section.content-section { padding: 38px 0 44px; }
+      .grid, .steps { grid-template-columns: 1fr; }
+      .card { padding: 20px; }
+      .wide-card { padding: 22px; }
+      body::before { background-position: 38% 14%; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+      .snow { display: none; }
+      .reveal { opacity: 1; transform: none; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="shell topbar-inner">
+      <a class="brand" href="#top" aria-label="Deluxe Launcher — наверх">
+        <img src="assets/deluxe-icon.webp" alt="" width="44" height="44">
+        <span class="brand-name">DELUXE LAUNCHER<small>MINECRAFT • JAVA EDITION</small></span>
+      </a>
+      <nav aria-label="Главное меню">
+        <a href="#features">Возможности</a>
+        <a href="#security">Безопасность</a>
+        <a href="#faq">Вопросы</a>
+        <a class="nav-download" href="#download">Скачать ↓</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="shell hero">
+      <div class="hero-content">
+        <span class="eyebrow"><span class="dot"></span> Зима, космос и Minecraft</span>
+        <h1>Твой Minecraft.<br><span class="gradient">Твой стиль.</span></h1>
+        <p class="lead">Deluxe Launcher собирает запуск игры в одном красивом месте: версии, Java, Fabric, профили и каталог клиентов — без лишней суеты.</p>
+        <div class="actions">
+          <a id="downloadBtn" class="btn btn-primary" href="#download">↓ Скачать Deluxe Launcher</a>
+          <a class="btn" href="#features">Изучить возможности <span aria-hidden="true">↘</span></a>
+        </div>
+        <p class="micro-note">Windows x64 · Исходный код открыт для ознакомления · Java Runtime Setup</p>
+        <div class="trust-row" aria-label="Ключевые функции">
+          <span class="pill">✦ Java 8 / 17 / 21 / 25</span>
+          <span class="pill">❄ Анимированный интерфейс</span>
+          <span class="pill">⬡ Fabric и моды</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="content-section" id="features">
+      <div class="shell">
+        <div class="section-top reveal">
+          <span class="eyebrow">✦ Возможности</span>
+          <h2>Всё нужное — <span class="gradient">под рукой</span></h2>
+          <p>Настрой запуск один раз и выбирай профиль, который подходит под твою игру.</p>
+        </div>
+        <div class="grid">
+          <article class="card reveal"><div class="icon">☕</div><h3>Java без головной боли</h3><p>Установка Eclipse Temurin JDK 8, 17, 21 и 25 через настройки. Подходящая версия Java выбирается с учётом версии Minecraft.</p></article>
+          <article class="card reveal"><div class="icon">⬡</div><h3>Fabric и зависимости</h3><p>Лаунчер подготавливает Fabric и нужные библиотеки. Fabric API и Fabric Language Kotlin ставятся для поддерживаемых профилей, когда они требуются.</p></article>
+          <article class="card reveal"><div class="icon">▦</div><h3>Каталог клиентов</h3><p>Профили разных клиентов собраны в одном списке. Выбирай поддерживаемую версию игры и смотри параметры перед запуском.</p></article>
+          <article class="card reveal"><div class="icon">✧</div><h3>Космический интерфейс</h3><p>Зимняя галактика на фоне, падающий снег, светящиеся карточки и анимированный логотип. Эффекты можно адаптировать под производительность ПК.</p></article>
+          <article class="card reveal"><div class="icon">⚙</div><h3>Оптимизация по желанию</h3><p>Дополнительные совместимые моды оптимизации запрашиваются только при выборе соответствующей опции, а не добавляются без спроса.</p></article>
+          <article class="card reveal"><div class="icon">☷</div><h3>Профили и ресурс-паки</h3><p>Раздельные профили помогают не смешивать моды разных клиентов. Поддерживается поиск и установка ресурс-паков.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="content-section">
+      <div class="shell card wide-card reveal">
+        <div>
+          <span class="eyebrow">Быстрый старт</span>
+          <h2>От установки<br>до <span class="gradient">игры в пару шагов</span></h2>
+          <p>При первом запуске потребуется интернет, чтобы загрузить саму игру и выбранные компоненты. После установки файлов повторный запуск обычно быстрее.</p>
+        </div>
+        <div class="steps">
+          <div class="step"><b>Шаг 01</b><strong>Установи лаунчер</strong><span>Скачай установщик из официального GitHub Release проекта.</span></div>
+          <div class="step"><b>Шаг 02</b><strong>Выбери профиль</strong><span>Укажи версию Minecraft, клиент и необязательные моды оптимизации.</span></div>
+          <div class="step"><b>Шаг 03</b><strong>Запусти игру</strong><span>Лаунчер проверит Java и скачает нужные файлы при необходимости.</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="content-section" id="security">
+      <div class="shell card wide-card reveal">
+        <div>
+          <span class="eyebrow">Понятная безопасность</span>
+          <h2>Без скрытых сюрпризов.<br><span class="gradient">С понятными настройками.</span></h2>
+          <p>Безопасность важнее громких обещаний. Мы описываем функции прямо и оставляем возможность изучить код перед запуском.</p>
+          <div class="warning">Важное уточнение: открытый исходный код сам по себе не является независимым аудитом и не гарантирует абсолютную безопасность. Скачивай только из релизов своего проверенного репозитория.</div>
+        </div>
+        <div>
+          <ul class="security-list">
+            <li><span class="check">✓</span><span>В опубликованном исходном проекте не предусмотрены функции скрытого майнинга, кейлоггинга или кражи паролей.</span></li>
+            <li><span class="check">✓</span><span>Файлы Minecraft, Java и выбранных модификаций загружаются для установки игровых профилей.</span></li>
+            <li><span class="check">✓</span><span>Discord Rich Presence и онлайн-счётчик являются дополнительными функциями и выключены, пока пользователь их не включит.</span></li>
+            <li><span class="check">✓</span><span>Webhook Discord должен храниться на сервере, а не внутри общедоступного кода лаунчера.</span></li>
+            <li><span class="check">✓</span><span>Перед публикацией релиза можно приложить SHA-256 установщика и результаты независимой антивирусной проверки.</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="content-section" id="faq">
+      <div class="shell">
+        <div class="section-top reveal"><span class="eyebrow">FAQ</span><h2>Коротко о главном</h2></div>
+        <div class="faq reveal">
+          <details><summary>Где взять рабочую ссылку на скачивание?</summary><p>Создай GitHub Release в своём репозитории, приложи готовый установщик и замени переменную <code>DOWNLOAD_URL</code> внизу этого <code>index.html</code> на прямую ссылку на файл из Assets релиза.</p></details>
+          <details><summary>Нужно ли вручную скачивать Java?</summary><p>Нет, если оставлена автоматическая настройка и доступен интернет: лаунчер может скачать поддерживаемую версию Temurin JDK. Также можно указать путь к уже установленной Java в настройках.</p></details>
+          <details><summary>Почему Windows может предупреждать о файле?</summary><p>Новый или неподписанный установщик иногда вызывает предупреждение SmartScreen. Это не доказывает ни наличие, ни отсутствие вируса. Проверь источник, подпись, хэш и результаты независимой проверки до запуска.</p></details>
+          <details><summary>Работает ли сайт без внешних библиотек?</summary><p>Да. Страница использует встроенные HTML, CSS и JavaScript, локальные изображения в папке assets (в оптимизированном формате WebP) и не требует внешних CDN или веб-шрифтов.</p></details>
+        </div>
+      </div>
+    </section>
+
+    <section class="content-section" id="download">
+      <div class="shell card final-cta reveal">
+        <span class="eyebrow">Готов к старту?</span>
+        <h2>Встретимся <span class="gradient">в игре.</span></h2>
+        <p>Скачай Deluxe Launcher из официального релиза проекта. Если ссылка ещё не настроена, сначала добавь установщик в GitHub Releases и укажи адрес в коде сайта.</p>
+        <div class="actions" style="justify-content:center">
+          <a id="downloadBtnBottom" class="btn btn-primary" href="#download">↓ Скачать для Windows</a>
+          <a id="sourceBtn" class="btn" href="#download">Открыть исходный код</a>
+        </div>
+        <p class="micro-note">Не скачивай установщики с неизвестных зеркал или из случайных комментариев.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="shell footer-inner">
+      <span>© <span id="year"></span> Deluxe Launcher · Неофициальный лаунчер для Minecraft.</span>
+      <div class="footer-links"><a id="footerSource" href="#top">Исходный код</a><a href="#security">Безопасность</a><a href="#top">Наверх ↑</a></div>
+    </div>
+  </footer>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script>
+    // ====== НАСТРОЙКИ САЙТА: ИЗМЕНИ ЭТИ ДВЕ ССЫЛКИ ПЕРЕД ПУБЛИКАЦИЕЙ ======
+    // Заменить на прямую ссылку на .exe из GitHub Releases, например:
+    // https://github.com/USERNAME/REPOSITORY/releases/latest/download/Deluxe%20Launcher-Setup-1.16.1-x64.exe
+    const DOWNLOAD_URL = "PASTE_GITHUB_RELEASE_DOWNLOAD_URL_HERE";
+    // Заменить на адрес репозитория, где опубликован исходный код:
+    const SOURCE_URL = "https://github.com/YOUR-USERNAME/YOUR-REPOSITORY";
+    // =====================================================================
+
+    const isRealUrl = (value) => {
+      try {
+        const url = new URL(value);
+        return url.protocol === "https:" && !/YOUR-USERNAME|YOUR-REPOSITORY|PASTE_/i.test(value);
+      } catch { return false; }
+    };
+    const toast = document.getElementById("toast");
+    let toastTimer;
+    function showToast(message) {
+      toast.textContent = message;
+      toast.classList.add("show");
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => toast.classList.remove("show"), 5200);
+    }
+    function connectLink(id, url, label) {
+      const element = document.getElementById(id);
+      if (!element) return;
+      if (isRealUrl(url)) {
+        element.href = url;
+        if (id.toLowerCase().includes("source") || id.toLowerCase().includes("footer")) {
+          element.target = "_blank";
+          element.rel = "noopener noreferrer";
+        }
+      } else {
+        element.href = "#download";
+        element.addEventListener("click", (event) => {
+          event.preventDefault();
+          showToast(`Ссылка ещё не настроена. Открой index.html и укажи ${label} в блоке «НАСТРОЙКИ САЙТА» внизу файла.`);
+        });
+      }
+    }
+    connectLink("downloadBtn", DOWNLOAD_URL, "DOWNLOAD_URL");
+    connectLink("downloadBtnBottom", DOWNLOAD_URL, "DOWNLOAD_URL");
+    connectLink("sourceBtn", SOURCE_URL, "SOURCE_URL");
+    connectLink("footerSource", SOURCE_URL, "SOURCE_URL");
+    document.getElementById("year").textContent = new Date().getFullYear();
+
+    // Lightweight snowfall; respects the system's reduced-motion setting and pauses in background tabs.
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (!prefersReducedMotion) {
+      const makeSnow = () => {
+        if (document.hidden) return;
+        const flake = document.createElement("span");
+        flake.className = "snow";
+        flake.setAttribute("aria-hidden", "true");
+        flake.textContent = Math.random() > .72 ? "❄" : "·";
+        const size = 7 + Math.random() * 12;
+        flake.style.left = `${Math.random() * 100}vw`;
+        flake.style.fontSize = `${size}px`;
+        flake.style.opacity = `${.22 + Math.random() * .6}`;
+        flake.style.setProperty("--drift", `${Math.random() * 160 - 80}px`);
+        const duration = 8 + Math.random() * 12;
+        flake.style.animationDuration = `${duration}s`;
+        document.body.appendChild(flake);
+        setTimeout(() => flake.remove(), duration * 1000 + 300);
+      };
+      for (let i = 0; i < 20; i++) setTimeout(makeSnow, i * 120);
+      setInterval(makeSnow, 520);
+    }
+
+    // Reveal sections only when they enter the viewport.
+    const revealItems = document.querySelectorAll(".reveal");
+    if ("IntersectionObserver" in window && !prefersReducedMotion) {
+      const observer = new IntersectionObserver((entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("visible");
+            observer.unobserve(entry.target);
+          }
+        }
+      }, { threshold: .12 });
+      revealItems.forEach((item) => observer.observe(item));
+    } else {
+      revealItems.forEach((item) => item.classList.add("visible"));
+    }
+  </script>
+</body>
+</html>
