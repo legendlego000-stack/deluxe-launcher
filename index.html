@@ -16,7 +16,6 @@
   <link rel="icon" type="image/png" sizes="64x64" href="assets/deluxe-favicon.png">
   <link rel="apple-touch-icon" href="assets/deluxe-touch-icon.png">
 
-  <!-- Hero art is the single biggest asset on the page: fetch it first, at full priority. -->
   <link rel="preload" as="image" href="assets/deluxe-bg.webp" fetchpriority="high">
 
   <style>
@@ -41,7 +40,6 @@
       background: var(--bg); font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
       line-height: 1.6; isolation: isolate;
     }
-    /* The brand artwork lives behind the whole site, not just the hero — it's the backdrop. */
     body::before {
       content: ""; position: fixed; z-index: -3; inset: -2% ;
       background: url("assets/deluxe-bg.webp") center 24% / cover no-repeat;
@@ -78,9 +76,19 @@
     .actions { display: flex; align-items: center; flex-wrap: wrap; gap: 11px; }
     .btn { display: inline-flex; align-items: center; justify-content: center; gap: 9px; min-height: 48px; padding: 12px 19px; border: 1px solid rgba(220,230,255,.2); border-radius: 14px; color: white; background: rgba(255,255,255,.06); text-decoration: none; font-size: 14px; font-weight: 850; cursor: pointer; transition: transform .2s, box-shadow .2s, background .2s, border-color .2s; }
     .btn:hover { transform: translateY(-2px); border-color: rgba(190,150,255,.55); box-shadow: 0 12px 32px rgba(0,0,0,.28); }
-    .btn:focus-visible, nav a:focus-visible, .brand:focus-visible { outline: 2px solid var(--cyan); outline-offset: 3px; }
     .btn-primary { color: #0a0820; border-color: transparent; background: linear-gradient(108deg, #74e9ff, #c6a8ff 55%, #ffd59a); box-shadow: 0 8px 30px rgba(150,110,255,.25); }
     .btn-primary:hover { box-shadow: 0 12px 38px rgba(150,110,255,.35); }
+    
+    /* Стили для модального окна поддержки */
+    .modal-overlay { position: fixed; inset: 0; z-index: 1000; background: rgba(4, 5, 12, 0.82); backdrop-filter: blur(12px); display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity .25s ease; }
+    .modal-overlay.active { opacity: 1; pointer-events: auto; }
+    .modal-card { width: min(440px, calc(100% - 32px)); background: linear-gradient(145deg, rgba(15,20,50,.96), rgba(9,12,31,.92)); border: 1px solid rgba(190,150,255,.35); border-radius: 22px; padding: 26px; text-align: center; box-shadow: 0 24px 80px rgba(0,0,0,.6); transform: translateY(15px); transition: transform .25s ease; }
+    .modal-overlay.active .modal-card { transform: translateY(0); }
+    .modal-card h3 { margin-bottom: 8px; font-size: 20px; }
+    .modal-card p { color: var(--muted); font-size: 13px; margin-bottom: 16px; }
+    .ad-container { margin: 15px 0; min-height: 90px; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.25); border-radius: 12px; border: 1px dashed rgba(255,255,255,0.1); }
+    .modal-timer { font-size: 12px; color: var(--gold); margin-bottom: 15px; font-weight: 700; }
+    
     .micro-note { margin: 14px 0 0; color: #aeb8d8; font-size: 12px; }
     .trust-row { display: flex; flex-wrap: wrap; gap: 9px; margin-top: 22px; }
     .pill { display: inline-flex; align-items: center; gap: 7px; border-radius: 999px; border: 1px solid rgba(255,255,255,.12); padding: 7px 11px; background: rgba(255,255,255,.045); color: #d9e0f8; font-size: 11px; font-weight: 700; }
@@ -111,7 +119,6 @@
     .faq { max-width: 850px; margin: 0 auto; display: grid; gap: 10px; }
     details { border-radius: 15px; background: rgba(9,12,32,.78); border: 1px solid var(--line); padding: 16px 19px; backdrop-filter: blur(10px); }
     summary { cursor: pointer; font-weight: 800; }
-    summary:focus-visible { outline: 2px solid var(--cyan); outline-offset: 3px; border-radius: 6px; }
     details p { margin: 10px 0 0; color: var(--muted); font-size: 14px; }
     .final-cta { text-align: center; padding: clamp(25px,5vw,50px); }
     .final-cta h2 { font-size: clamp(29px,4.5vw,49px); line-height: 1.03; letter-spacing: -1.8px; margin: 10px 0; }
@@ -174,6 +181,7 @@
         <a href="#features">Возможности</a>
         <a href="#security">Безопасность</a>
         <a href="#faq">Вопросы</a>
+        <a id="supportNavBtn" href="#support" style="color: var(--cyan);">☕ Поддержать</a>
         <a class="nav-download" href="#download">Скачать ↓</a>
       </nav>
     </div>
@@ -187,7 +195,7 @@
         <p class="lead">Deluxe Launcher собирает запуск игры в одном красивом месте: версии, Java, Fabric, профили и каталог клиентов — без лишней суеты.</p>
         <div class="actions">
           <a id="downloadBtn" class="btn btn-primary" href="#download">↓ Скачать Deluxe Launcher</a>
-          <a class="btn" href="#features">Изучить возможности <span aria-hidden="true">↘</span></a>
+          <button id="supportHeroBtn" class="btn">☕ Поддержать проект</button>
         </div>
         <p class="micro-note">Windows x64 · Исходный код открыт для ознакомления · Java Runtime Setup</p>
         <div class="trust-row" aria-label="Ключевые функции">
@@ -258,7 +266,7 @@
           <details><summary>Где взять рабочую ссылку на скачивание?</summary><p>Создай GitHub Release в своём репозитории, приложи готовый установщик и замени переменную <code>DOWNLOAD_URL</code> внизу этого <code>index.html</code> на прямую ссылку на файл из Assets релиза.</p></details>
           <details><summary>Нужно ли вручную скачивать Java?</summary><p>Нет, если оставлена автоматическая настройка и доступен интернет: лаунчер может скачать поддерживаемую версию Temurin JDK. Также можно указать путь к уже установленной Java в настройках.</p></details>
           <details><summary>Почему Windows может предупреждать о файле?</summary><p>Новый или неподписанный установщик иногда вызывает предупреждение SmartScreen. Это не доказывает ни наличие, ни отсутствие вируса. Проверь источник, подпись, хэш и результаты независимой проверки до запуска.</p></details>
-          <details><summary>Работает ли сайт без внешних библиотек?</summary><p>Да. Страница использует встроенные HTML, CSS и JavaScript, локальные изображения в папке assets (в оптимизированном формате WebP) и не требует внешних CDN или веб-шрифтов.</p></details>
+          <details><summary>Работает ли сайт без внешних библиотек?</summary><p>Да. Страница использует встроенные HTML, CSS и JavaScript, локальные изображения в папке assets и не требует внешних CDN или веб-шрифтов.</p></details>
         </div>
       </div>
     </section>
@@ -283,16 +291,30 @@
       <div class="footer-links"><a id="footerSource" href="#top">Исходный код</a><a href="#security">Безопасность</a><a href="#top">Наверх ↑</a></div>
     </div>
   </footer>
+
+  <!-- Модальное окно поддержки (нативный баннер по клику) -->
+  <div class="modal-overlay" id="supportModal" role="dialog" aria-modal="true">
+    <div class="modal-card">
+      <h3>Поддержать Deluxe Launcher</h3>
+      <p>Спасибо, что помогаешь развитию проекта! Просмотр этого блока помогает нам оплачивать хостинг и обновления.</p>
+      
+      <div class="ad-container" id="adSlot">
+        <!-- Контейнер и скрипт нативного баннера Adsterra -->
+        <div id="container-1d1455a7b078c421db1072b322cd6b4f"></div>
+      </div>
+      
+      <div class="modal-timer" id="modalTimer">Подождите пару секунд...</div>
+      <button class="btn btn-primary modal-close-btn" id="modalCloseBtn" disabled>Спасибо, закрыть окно</button>
+    </div>
+  </div>
+
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
   <script>
-    // ====== НАСТРОЙКИ САЙТА: ИЗМЕНИ ЭТИ ДВЕ ССЫЛКИ ПЕРЕД ПУБЛИКАЦИЕЙ ======
-    // Заменить на прямую ссылку на .exe из GitHub Releases, например:
-    // https://github.com/USERNAME/REPOSITORY/releases/latest/download/Deluxe%20Launcher-Setup-1.16.1-x64.exe
+    // ====== НАСТРОЙКИ САЙТА ======
     const DOWNLOAD_URL = "PASTE_GITHUB_RELEASE_DOWNLOAD_URL_HERE";
-    // Заменить на адрес репозитория, где опубликован исходный код:
     const SOURCE_URL = "https://github.com/YOUR-USERNAME/YOUR-REPOSITORY";
-    // =====================================================================
+    // =============================
 
     const isRealUrl = (value) => {
       try {
@@ -300,6 +322,7 @@
         return url.protocol === "https:" && !/YOUR-USERNAME|YOUR-REPOSITORY|PASTE_/i.test(value);
       } catch { return false; }
     };
+
     const toast = document.getElementById("toast");
     let toastTimer;
     function showToast(message) {
@@ -308,6 +331,7 @@
       clearTimeout(toastTimer);
       toastTimer = setTimeout(() => toast.classList.remove("show"), 5200);
     }
+
     function connectLink(id, url, label) {
       const element = document.getElementById(id);
       if (!element) return;
@@ -331,7 +355,62 @@
     connectLink("footerSource", SOURCE_URL, "SOURCE_URL");
     document.getElementById("year").textContent = new Date().getFullYear();
 
-    // Lightweight snowfall; respects the system's reduced-motion setting and pauses in background tabs.
+    // Логика модального окна поддержки и динамической загрузки нативного баннера
+    const supportModal = document.getElementById("supportModal");
+    const supportHeroBtn = document.getElementById("supportHeroBtn");
+    const supportNavBtn = document.getElementById("supportNavBtn");
+    const modalCloseBtn = document.getElementById("modalCloseBtn");
+    const modalTimer = document.getElementById("modalTimer");
+
+    let adLoaded = false;
+
+    function openSupportModal(e) {
+      if (e) e.preventDefault();
+      supportModal.classList.add("active");
+      
+      // Загружаем скрипт нативного баннера Adsterra только при открытии окна
+      if (!adLoaded) {
+        adLoaded = true;
+        const script = document.createElement("script");
+        script.async = true;
+        script.setAttribute("data-cfasync", "false");
+        script.src = "https://bauval.org/21/1d1455a7b078c421db1072b322cd6b4f";
+        document.body.appendChild(script);
+      }
+
+      // Таймер на 4 секунды
+      let timeLeft = 4;
+      modalCloseBtn.disabled = true;
+      modalTimer.textContent = `Осталось секунд: ${timeLeft}`;
+      
+      const countdown = setInterval(() => {
+        timeLeft--;
+        if (timeLeft > 0) {
+          modalTimer.textContent = `Осталось секунд: ${timeLeft}`;
+        } else {
+          clearInterval(countdown);
+          modalTimer.textContent = "Спасибо за поддержку проекта! ✨";
+          modalCloseBtn.disabled = false;
+        }
+      }, 1000);
+    }
+
+    function closeSupportModal() {
+      supportModal.classList.remove("active");
+    }
+
+    supportHeroBtn.addEventListener("click", openSupportModal);
+    supportNavBtn.addEventListener("click", openSupportModal);
+    modalCloseBtn.addEventListener("click", closeSupportModal);
+    
+    // Закрытие по клику вне карточки
+    supportModal.addEventListener("click", (e) => {
+      if (e.target === supportModal && !modalCloseBtn.disabled) {
+        closeSupportModal();
+      }
+    });
+
+    // Легкий снег
     const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (!prefersReducedMotion) {
       const makeSnow = () => {
@@ -354,7 +433,7 @@
       setInterval(makeSnow, 520);
     }
 
-    // Reveal sections only when they enter the viewport.
+    // Появление секций при скролле
     const revealItems = document.querySelectorAll(".reveal");
     if ("IntersectionObserver" in window && !prefersReducedMotion) {
       const observer = new IntersectionObserver((entries) => {
