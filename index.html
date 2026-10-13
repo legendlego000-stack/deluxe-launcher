@@ -2,124 +2,452 @@
 <html lang="ru">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="theme-color" content="#080a18">
-  <meta name="description" content="Deluxe Launcher — обновления, сообщество и скачивание Minecraft Launcher.">
-  <title>Deluxe Launcher · Обновления и сообщество</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#090b20">
+  <meta name="color-scheme" content="dark">
+  <meta name="description" content="Deluxe Launcher — удобный лаунчер Minecraft с профилями, настройкой Java, Fabric и каталогом клиентов.">
+  <meta property="og:title" content="Deluxe Launcher — Minecraft, но по-твоему">
+  <meta property="og:description" content="Удобный запуск Minecraft, версии Java, профили Fabric и каталог клиентов в одном месте.">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="assets/deluxe-bg.webp">
+  <meta name="twitter:card" content="summary_large_image">
+  <title>Deluxe Launcher — Minecraft, но по-твоему</title>
+
+  <link rel="icon" type="image/png" sizes="64x64" href="assets/deluxe-favicon.png">
+  <link rel="apple-touch-icon" href="assets/deluxe-touch-icon.png">
+
+  <link rel="preload" as="image" href="assets/deluxe-bg.webp" fetchpriority="high">
+
   <style>
-    :root{color-scheme:dark;--bg:#080a18;--panel:rgba(19,22,48,.82);--line:rgba(203,209,255,.14);--text:#f5f5ff;--muted:#aab2d2;--cyan:#6de6ff;--violet:#b58cff;--green:#7bf1ce;--gold:#ffd9a0}
-    *{box-sizing:border-box}body{margin:0;min-height:100vh;background:radial-gradient(ellipse at 18% 0,rgba(102,84,220,.2),transparent 44%),radial-gradient(ellipse at 90% 44%,rgba(52,198,255,.1),transparent 38%),var(--bg);color:var(--text);font:15px/1.6 "Segoe UI",system-ui,sans-serif}
-    body:before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background-image:radial-gradient(2px 2px at 12% 22%,#fff8,transparent),radial-gradient(1px 1px at 76% 15%,#fff9,transparent),radial-gradient(1px 1px at 84% 70%,#b6a5ffb0,transparent),radial-gradient(2px 2px at 40% 80%,#78e7ff99,transparent);background-size:240px 230px,270px 210px,330px 290px,360px 330px;animation:stars 22s linear infinite}
-    @keyframes stars{to{background-position:0 210px,0 190px,0 270px,0 240px}}@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}@keyframes shimmer{from{transform:translateX(-140%) rotate(18deg)}to{transform:translateX(650%) rotate(18deg)}}
-    .shell{width:min(1050px,calc(100% - 30px));margin:auto}.top{display:flex;justify-content:space-between;align-items:center;gap:18px;padding:22px 0}.brand{display:flex;align-items:center;gap:12px;font-weight:950;letter-spacing:1px}.logo{width:43px;height:43px;display:grid;place-items:center;border:1px solid #b99aff66;border-radius:14px;background:linear-gradient(145deg,#201a49,#0b1328);color:#e0ceff;font-size:22px;box-shadow:0 0 24px #9b6bff22}.muted{color:var(--muted)}.pill{font-size:11px;letter-spacing:.8px;text-transform:uppercase;border:1px solid #7bf1ce33;color:#a5ffe4;border-radius:999px;padding:6px 10px;background:#65ffcd09}
-    .hero{padding:50px 0 35px;display:grid;grid-template-columns:1.1fr .9fr;gap:22px;align-items:stretch}.panel{position:relative;overflow:hidden;border:1px solid var(--line);border-radius:24px;background:linear-gradient(140deg,rgba(22,25,54,.88),rgba(10,12,29,.9));box-shadow:0 22px 70px #0004,inset 0 1px #ffffff0a;backdrop-filter:blur(17px)}.hero-copy{padding:clamp(24px,4vw,42px)}.eyebrow{font-size:10px;font-weight:900;letter-spacing:1.6px;text-transform:uppercase;color:#c8b7ff}.hero h1{font-size:clamp(35px,5.4vw,59px);letter-spacing:-2.6px;line-height:1;margin:17px 0}.gradient{color:transparent;background:linear-gradient(100deg,var(--cyan),var(--violet),var(--gold));background-clip:text}.hero p{max-width:590px;color:#c2cae7}.actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px}.btn{position:relative;overflow:hidden;border:1px solid #d8ddff28;border-radius:13px;min-height:45px;padding:10px 16px;background:#ffffff0a;color:#fff;font:inherit;font-weight:800;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;transition:transform .2s,border-color .2s,box-shadow .2s}.btn:hover{transform:translateY(-2px);border-color:#bba0ff90;box-shadow:0 8px 25px #8f6cff24}.primary{color:#0a0b1c;border-color:transparent;background:linear-gradient(105deg,#73e8ff,#c2a0ff 57%,#ffdda0)}.btn:disabled{opacity:.45;cursor:not-allowed;transform:none}.stat-card{padding:22px;display:flex;flex-direction:column;justify-content:space-between;min-height:270px}.stat-top{display:flex;justify-content:space-between;gap:10px;align-items:center}.online-number{font-size:clamp(44px,6vw,72px);font-weight:950;letter-spacing:-3px;line-height:1.1;background:linear-gradient(100deg,#fff,var(--cyan),var(--violet));color:transparent;background-clip:text;animation:float 5s ease-in-out infinite}.online-caption{font-size:13px;color:var(--muted)}.version-box{margin-top:20px;padding:14px;border-radius:15px;border:1px solid #fff1;background:#fff1}.version-line{display:flex;justify-content:space-between;gap:10px;align-items:center}.version-name{font-weight:900}.section{padding:18px 0 45px}.section-head{margin-bottom:16px}.section h2{font-size:25px;letter-spacing:-.6px;margin:0 0 6px}.section-head p{margin:0;color:var(--muted);font-size:13px}.download-panel{padding:22px}.download-panel p{color:var(--muted);font-size:13px}.chat-panel{padding:0}.chat-head{padding:18px 20px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:10px}.chat-head h2{font-size:19px;margin:0}.chat-feed{height:300px;overflow:auto;padding:15px;display:flex;flex-direction:column;gap:9px;scrollbar-width:thin;scrollbar-color:#7e6cbb77 transparent}.message{display:grid;grid-template-columns:31px minmax(0,1fr);gap:9px;padding:10px 11px;border:1px solid #d8ddff13;border-radius:13px;background:#fff04;animation:float .35s ease both}.avatar{width:31px;height:31px;display:grid;place-items:center;border-radius:10px;color:#d6c4ff;background:#9d78ff1d;font-weight:900}.message-meta{display:flex;gap:9px;align-items:center}.nick{color:#cfc1ff;font-weight:850;font-size:11px}.time{color:#8992b8;font-size:9px}.body{white-space:pre-wrap;overflow-wrap:anywhere;font-size:12px;margin-top:3px}.chat-welcome{margin:auto;text-align:center;color:var(--muted);font-size:13px;padding:20px}.chat-form{border-top:1px solid var(--line);padding:15px;display:grid;gap:10px}.fields{display:flex;gap:10px;flex-wrap:wrap}.field{width:100%;min-width:0;border:1px solid #d8ddff22;border-radius:11px;background:#080b1c;color:#fff;padding:11px 12px;font:inherit;outline:none}.field:focus{border-color:#ae91ffad;box-shadow:0 0 0 3px #9c78ff1c}.nick-field{flex:1;min-width:150px}.anon{font-size:11px;color:var(--muted);display:flex;align-items:center;gap:7px}.anon input{accent-color:var(--violet)}.chat-send-row{display:flex;gap:10px}.chat-send-row textarea{flex:1;resize:vertical;min-height:45px;max-height:100px}.chat-status{font-size:11px;color:var(--muted);min-height:18px}.footnote{font-size:11px;color:#858db2;margin:15px 0}.hidden{display:none!important}footer{border-top:1px solid #fff1;padding:25px 0 35px;color:#8992b8;font-size:11px}
-    @media(max-width:760px){.hero{grid-template-columns:1fr;padding-top:25px}.stat-card{min-height:220px}.top{align-items:flex-start}.pill{display:none}.hero h1{letter-spacing:-1.6px}.chat-send-row{flex-direction:column}.chat-send-row .btn{width:100%}}
-    @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+    :root {
+      color-scheme: dark;
+      --bg: #06070f;
+      --panel: rgba(10, 13, 34, .72);
+      --line: rgba(205, 216, 255, .16);
+      --text: #f8f8ff;
+      --muted: #b8c0de;
+      --cyan: #6be8ff;
+      --violet: #b48bff;
+      --crystal: #c78bff;
+      --gold: #ffd59a;
+      --green: #82f6c8;
+      --shadow: 0 24px 80px rgba(0, 0, 0, .4);
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-padding-top: 90px; }
+    body {
+      margin: 0; min-height: 100%; overflow-x: hidden; color: var(--text);
+      background: var(--bg); font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+      line-height: 1.6; isolation: isolate;
+    }
+    body::before {
+      content: ""; position: fixed; z-index: -3; inset: -2% ;
+      background: url("assets/deluxe-bg.webp") center 24% / cover no-repeat;
+      transform: scale(1.02); animation: galaxy-drift 32s ease-in-out infinite alternate;
+    }
+    body::after {
+      content: ""; position: fixed; z-index: -2; inset: 0; pointer-events: none;
+      background:
+        radial-gradient(ellipse 55% 42% at 50% 20%, rgba(130, 90, 230, .14), transparent 60%),
+        linear-gradient(180deg, rgba(5, 6, 16, .22) 0%, rgba(5, 6, 16, .5) 46%, rgba(4, 5, 13, .86) 78%, rgba(4, 5, 12, .96) 100%);
+    }
+    a { color: inherit; }
+    button, a { -webkit-tap-highlight-color: transparent; }
+    .snow { position: fixed; z-index: 5; top: -15px; color: rgba(235, 249, 255, .88); pointer-events: none; user-select: none; text-shadow: 0 0 12px rgba(119, 218, 255, .8); animation: snowfall linear forwards; will-change: transform, opacity; }
+    .shell { width: min(1160px, calc(100% - 40px)); margin-inline: auto; }
+    .topbar { position: sticky; z-index: 20; top: 0; border-bottom: 1px solid rgba(255,255,255,.1); background: rgba(6, 7, 18, .62); backdrop-filter: blur(22px); -webkit-backdrop-filter: blur(22px); }
+    .topbar-inner { min-height: 76px; display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+    .brand { display: inline-flex; align-items: center; gap: 12px; text-decoration: none; flex: 0 0 auto; }
+    .brand img { width: 44px; height: 44px; object-fit: cover; border-radius: 11px; box-shadow: 0 0 0 1px rgba(200,170,255,.35), 0 0 20px rgba(150,110,255,.35); }
+    .brand-name { font-size: 15px; line-height: 1.08; font-weight: 950; letter-spacing: 1.2px; background: linear-gradient(100deg,#fff,var(--cyan),var(--crystal)); color: transparent; background-clip: text; -webkit-background-clip: text; }
+    .brand-name small { display: block; margin-top: 5px; color: #9ca7cb; font-size: 8px; letter-spacing: 2px; font-weight: 700; }
+    nav { display: flex; align-items: center; gap: 6px; }
+    nav a { color: #c5cce4; text-decoration: none; font-size: 13px; font-weight: 650; padding: 10px 13px; border-radius: 12px; transition: background .2s,color .2s,transform .2s; }
+    nav a:hover { background: rgba(255,255,255,.08); color: white; transform: translateY(-1px); }
+    .nav-download { border: 1px solid rgba(190,150,255,.4); background: rgba(150, 110, 255, .14); }
+    .hero { min-height: 690px; min-height: min(790px, calc(100svh - 76px)); display: flex; align-items: flex-end; padding-block: 76px 72px; position: relative; }
+    .hero-content { width: min(600px, 100%); padding: clamp(22px, 3.6vw, 38px); border-radius: 26px; border: 1px solid rgba(203,220,255,.2); background: linear-gradient(145deg, rgba(6,9,29,.82), rgba(9,12,34,.6)); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); box-shadow: var(--shadow), inset 0 1px rgba(255,255,255,.07); animation: hero-enter .85s cubic-bezier(.2,.8,.2,1) both; }
+    .eyebrow { display: inline-flex; align-items: center; gap: 9px; color: #d7ddf6; font-size: 11px; font-weight: 800; letter-spacing: 1px; }
+    .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green); box-shadow: 0 0 15px var(--green); animation: pulse 1.8s ease-in-out infinite; }
+    h1, h2, h3, p { margin-top: 0; }
+    h1 { max-width: 630px; margin: 18px 0 16px; font-size: clamp(35px, 6vw, 64px); line-height: .99; letter-spacing: -2.6px; font-weight: 950; }
+    .gradient { color: transparent; background: linear-gradient(100deg, var(--cyan), var(--crystal) 55%, var(--gold)); background-clip: text; -webkit-background-clip: text; }
+    .lead { max-width: 545px; color: #d1d6eb; font-size: clamp(15px, 1.7vw, 18px); margin-bottom: 23px; }
+    .actions { display: flex; align-items: center; flex-wrap: wrap; gap: 11px; }
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 9px; min-height: 48px; padding: 12px 19px; border: 1px solid rgba(220,230,255,.2); border-radius: 14px; color: white; background: rgba(255,255,255,.06); text-decoration: none; font-size: 14px; font-weight: 850; cursor: pointer; transition: transform .2s, box-shadow .2s, background .2s, border-color .2s; }
+    .btn:hover { transform: translateY(-2px); border-color: rgba(190,150,255,.55); box-shadow: 0 12px 32px rgba(0,0,0,.28); }
+    .btn-primary { color: #0a0820; border-color: transparent; background: linear-gradient(108deg, #74e9ff, #c6a8ff 55%, #ffd59a); box-shadow: 0 8px 30px rgba(150,110,255,.25); }
+    .btn-primary:hover { box-shadow: 0 12px 38px rgba(150,110,255,.35); }
+    
+    /* Стили для модального окна поддержки */
+    .modal-overlay { position: fixed; inset: 0; z-index: 1000; background: rgba(4, 5, 12, 0.82); backdrop-filter: blur(12px); display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity .25s ease; }
+    .modal-overlay.active { opacity: 1; pointer-events: auto; }
+    .modal-card { width: min(440px, calc(100% - 32px)); background: linear-gradient(145deg, rgba(15,20,50,.96), rgba(9,12,31,.92)); border: 1px solid rgba(190,150,255,.35); border-radius: 22px; padding: 26px; text-align: center; box-shadow: 0 24px 80px rgba(0,0,0,.6); transform: translateY(15px); transition: transform .25s ease; }
+    .modal-overlay.active .modal-card { transform: translateY(0); }
+    .modal-card h3 { margin-bottom: 8px; font-size: 20px; }
+    .modal-card p { color: var(--muted); font-size: 13px; margin-bottom: 16px; }
+    .ad-container { margin: 15px 0; min-height: 90px; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.25); border-radius: 12px; border: 1px dashed rgba(255,255,255,0.1); }
+    .modal-timer { font-size: 12px; color: var(--gold); margin-bottom: 15px; font-weight: 700; }
+    
+    .micro-note { margin: 14px 0 0; color: #aeb8d8; font-size: 12px; }
+    .trust-row { display: flex; flex-wrap: wrap; gap: 9px; margin-top: 22px; }
+    .pill { display: inline-flex; align-items: center; gap: 7px; border-radius: 999px; border: 1px solid rgba(255,255,255,.12); padding: 7px 11px; background: rgba(255,255,255,.045); color: #d9e0f8; font-size: 11px; font-weight: 700; }
+    section.content-section { padding: 55px 0 62px; }
+    .section-top { max-width: 730px; margin: 0 auto 26px; text-align: center; }
+    .section-top h2 { margin: 9px 0 10px; font-size: clamp(27px, 4vw, 42px); line-height: 1.08; letter-spacing: -1.25px; }
+    .section-top p { color: var(--muted); margin-bottom: 0; }
+    .grid { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 15px; }
+    .card { position: relative; overflow: hidden; min-width: 0; padding: 23px; border-radius: 21px; border: 1px solid var(--line); background: linear-gradient(145deg, rgba(13,17,44,.82), rgba(9,12,31,.72)); box-shadow: 0 18px 50px rgba(0,0,0,.2), inset 0 1px rgba(255,255,255,.035); backdrop-filter: blur(12px); transition: transform .23s,border-color .23s,background .23s; }
+    .card::after { content: ""; position: absolute; width: 140px; height: 140px; border-radius: 50%; right: -80px; top: -80px; background: rgba(150,110,255,.12); filter: blur(1px); transition: transform .35s; pointer-events: none; }
+    .card:hover { transform: translateY(-4px); border-color: rgba(190,150,255,.3); background: linear-gradient(145deg, rgba(15,20,50,.91), rgba(9,12,31,.82)); }
+    .card:hover::after { transform: scale(1.55); }
+    .icon { width: 43px; height: 43px; display: grid; place-items: center; margin-bottom: 17px; border-radius: 14px; border: 1px solid rgba(190,150,255,.3); color: var(--crystal); background: rgba(150,110,255,.08); font-size: 21px; }
+    .card h3 { position: relative; z-index: 1; margin-bottom: 8px; font-size: 17px; }
+    .card p { position: relative; z-index: 1; margin-bottom: 0; color: var(--muted); font-size: 14px; }
+    .wide-card { display: grid; grid-template-columns: .9fr 1.1fr; gap: 26px; align-items: center; padding: clamp(23px,4vw,40px); }
+    .wide-card h2 { font-size: clamp(27px,4vw,42px); line-height: 1.06; letter-spacing: -1.4px; margin-bottom: 12px; }
+    .wide-card p { color: var(--muted); }
+    .steps { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 12px; }
+    .step { padding: 19px; border-radius: 16px; background: rgba(255,255,255,.035); border: 1px solid rgba(255,255,255,.1); }
+    .step b { display: block; margin-bottom: 6px; color: var(--cyan); font-size: 11px; letter-spacing: 1px; font-weight: 800; }
+    .step strong { display: block; margin-bottom: 5px; }
+    .step span { display: block; color: var(--muted); font-size: 13px; }
+    .security-list { display: grid; gap: 12px; margin: 20px 0 0; padding: 0; list-style: none; }
+    .security-list li { display: flex; align-items: flex-start; gap: 10px; color: #d9e0f7; font-size: 14px; }
+    .check { color: var(--green); font-weight: 950; }
+    .warning { color: #ecdfff; border: 1px solid rgba(190,150,255,.26); background: rgba(102,79,161,.14); padding: 15px 17px; border-radius: 14px; font-size: 12px; margin: 20px 0 0; }
+    .faq { max-width: 850px; margin: 0 auto; display: grid; gap: 10px; }
+    details { border-radius: 15px; background: rgba(9,12,32,.78); border: 1px solid var(--line); padding: 16px 19px; backdrop-filter: blur(10px); }
+    summary { cursor: pointer; font-weight: 800; }
+    details p { margin: 10px 0 0; color: var(--muted); font-size: 14px; }
+    .final-cta { text-align: center; padding: clamp(25px,5vw,50px); }
+    .final-cta h2 { font-size: clamp(29px,4.5vw,49px); line-height: 1.03; letter-spacing: -1.8px; margin: 10px 0; }
+    .final-cta p { max-width: 570px; margin: 0 auto 20px; color: var(--muted); }
+    footer { padding: 25px 0 34px; border-top: 1px solid rgba(255,255,255,.09); color: #9ca7c9; font-size: 12px; }
+    .footer-inner { display: flex; justify-content: space-between; align-items: center; gap: 14px; flex-wrap: wrap; }
+    .footer-links { display: flex; gap: 14px; flex-wrap: wrap; }
+    .footer-links a { color: #c8d0ea; text-decoration: none; }
+    .footer-links a:hover { color: var(--cyan); }
+    .toast { position: fixed; z-index: 50; left: 50%; bottom: 24px; width: min(560px, calc(100% - 28px)); transform: translate(-50%, 18px); opacity: 0; pointer-events: none; padding: 14px 17px; border: 1px solid rgba(190,150,255,.32); border-radius: 14px; background: rgba(7,10,28,.95); box-shadow: var(--shadow); color: #eef5ff; font-size: 13px; transition: opacity .2s,transform .2s; }
+    .toast.show { opacity: 1; transform: translate(-50%, 0); }
+    .reveal { opacity: 0; transform: translateY(18px); transition: opacity .65s, transform .65s cubic-bezier(.2,.8,.2,1); }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    @keyframes snowfall { to { transform: translate3d(var(--drift), 110vh, 0) rotate(300deg); opacity: .12; } }
+    @keyframes pulse { 0%,100% { opacity: .7; transform: scale(.9); } 50% { opacity: 1; transform: scale(1.2); } }
+    @keyframes hero-enter { from { opacity: 0; transform: translateY(15px) scale(.99); } to { opacity: 1; transform: translateY(0) scale(1); } }
+    @keyframes galaxy-drift { from { transform: scale(1.02) translate3d(0,0,0); } to { transform: scale(1.08) translate3d(-1.1%,.8%,0); } }
+    @media (max-width: 860px) {
+      nav a:not(.nav-download) { display: none; }
+      .hero { min-height: 690px; align-items: flex-end; padding-top: 210px; }
+      .grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
+      .wide-card { grid-template-columns: 1fr; }
+      body::before { background-position: 32% 18%; }
+    }
+    @media (max-width: 560px) {
+      .shell { width: min(100% - 26px, 1160px); }
+      .topbar-inner { min-height: 66px; gap: 8px; }
+      .brand img { width: 37px; height: 37px; }
+      .brand-name { font-size: 12px; }
+      .brand-name small { font-size: 7px; }
+      .nav-download { font-size: 12px; padding: 9px 11px; }
+      .hero { min-height: 700px; min-height: calc(100svh - 66px); padding-block: 150px 28px; }
+      .hero-content { padding: 22px 18px; border-radius: 20px; }
+      h1 { font-size: clamp(36px, 11vw, 52px); letter-spacing: -1.6px; }
+      .btn { width: 100%; }
+      .actions { display: grid; grid-template-columns: 1fr; }
+      .trust-row { gap: 7px; }
+      .pill { font-size: 10px; }
+      section.content-section { padding: 38px 0 44px; }
+      .grid, .steps { grid-template-columns: 1fr; }
+      .card { padding: 20px; }
+      .wide-card { padding: 22px; }
+      body::before { background-position: 38% 14%; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+      .snow { display: none; }
+      .reveal { opacity: 1; transform: none; }
+    }
   </style>
 </head>
 <body>
-  <header class="shell top"><div class="brand"><span class="logo">✦</span><span>DELUXE LAUNCHER<br><small class="muted" style="font-size:9px;letter-spacing:2px">MINECRAFT · JAVA EDITION</small></span></div><span class="pill">✧ космос и Minecraft</span></header>
-  <main class="shell">
-    <section class="hero">
-      <div class="panel hero-copy"><span class="eyebrow">Deluxe Community</span><h1>Твой Minecraft.<br><span class="gradient">Твой стиль.</span></h1><p>Скачивай обновления Deluxe Launcher, следи за активностью сообщества и общайся с другими игроками. Чат подключается только по кнопке.</p><div class="actions"><a class="btn primary" href="#download" id="heroDownload">↓ Скачать лаунчер</a><button class="btn" id="openChatBtn">💬 Открыть чат</button></div><p class="footnote">Неофициальный лаунчер. Проверяй SHA-256 установщика перед запуском. Не вводи пароль Microsoft или другие секреты в чате.</p></div>
-      <aside class="panel stat-card"><div class="stat-top"><span class="eyebrow">Сейчас в Deluxe</span><span class="pill">LIVE · OPT-IN</span></div><div><div class="online-number" id="onlineCount">—</div><div class="online-caption" id="onlineCaption">Онлайн будет доступен после настройки API</div></div><div class="version-box"><div class="version-line"><span class="muted" style="font-size:11px">Последняя версия</span><strong class="version-name" id="latestVersion">—</strong></div><p id="releaseNotes" class="muted" style="margin:7px 0 0;font-size:11px">Проверяю манифест…</p></div></aside>
-    </section>
-    <section class="section" id="download"><div class="section-head"><h2>Обновления</h2><p>Публикуй новую версию через update-manifest.json. Лаунчер проверяет этот файл при старте и предлагает обновление, если версия или ссылка изменилась.</p></div><div class="panel download-panel"><div class="version-line"><div><strong id="downloadTitle">Deluxe Launcher</strong><div class="muted" id="downloadStatus">Читаю update-manifest.json…</div></div><span class="pill" id="downloadIntegrity">SHA-256</span></div><p id="downloadNotes">Описание обновления появится здесь.</p><div class="actions"><a class="btn primary" id="downloadBtn" href="#download" aria-disabled="true">↓ Скачать для Windows</a><button class="btn" id="reloadManifestBtn">Проверить снова</button></div><p class="footnote">Для прямого скачивания укажи HTTPS-ссылку на GitHub Release asset или на Google Drive файл. Для Google Drive страница преобразует ссылку формата /file/d/ID/view в ссылку загрузки. При больших файлах Google может дополнительно показать свой экран подтверждения.</p></div></section>
-    <section class="section" id="community"><div class="section-head"><h2>Чат сообщества</h2><p>Публичные сообщения видят все участники. При отправке сообщение также копируется в Discord через серверный webhook.</p></div><div class="panel chat-panel"><div class="chat-head"><h2>💬 Общий чат</h2><button class="btn" id="closeChatBtn" type="button">Закрыть чат</button></div><div id="chatArea" class="hidden"><div class="chat-feed" id="chatFeed" role="log" aria-live="polite"><div class="chat-welcome">Нажми «Открыть чат», чтобы загрузить последние сообщения.</div></div><form class="chat-form" id="chatForm"><div class="fields"><input id="chatNickname" class="field nick-field" maxlength="20" minlength="2" placeholder="Твой ник в чате" value="Player" aria-label="Ник в чате"><label class="anon"><input id="chatAnonymous" type="checkbox"> Скрыть ник · Аноним</label></div><div class="chat-send-row"><textarea id="chatMessage" class="field" rows="2" maxlength="500" placeholder="Напиши сообщение…" aria-label="Сообщение"></textarea><button id="chatSendBtn" class="btn primary" type="submit">Отправить ↗</button></div><div class="chat-status" id="chatStatus" role="status" aria-live="polite">Чат закрыт: сетевые запросы не выполняются.</div></form></div></div><p class="footnote">Сообщения публичны и до 30 дней хранятся на сервере. Discord-модераторы могут видеть их в журнале. Не отправляй личные данные, пароли, коды входа или приватные ссылки.</p></section>
-  </main>
-  <footer><div class="shell">© <span id="year"></span> Deluxe Launcher · Статическая страница GitHub Pages · Не размещай секреты в HTML.</div></footer>
-  <script>
-    // Replace with the public HTTPS URL of your Cloudflare Worker. The Discord webhook is NEVER placed here.
-    const COMMUNITY_API_BASE = 'REPLACE_WITH_YOUR_CLOUDFLARE_WORKER_URL';
-    const MANIFEST_URL = './update-manifest.json';
-    const $ = (id) => document.getElementById(id);
-    const isHttpsUrl = (v) => { try { const u = new URL(v); return u.protocol === 'https:' && !u.username && !u.password && !u.hash; } catch { return false; } };
-    function directDownloadUrl(raw) {
-      const u = new URL(raw);
-      if (u.protocol !== 'https:') throw new Error('Installer URL must use HTTPS.');
-      if (u.hostname === 'drive.google.com') {
-        const idInPath = u.pathname.match(/\/file\/d\/([^/]+)/);
-        const id = idInPath?.[1] || u.searchParams.get('id');
-        if (id && /^[\w-]{10,}$/.test(id)) return `https://drive.google.com/uc?export=download&id=${encodeURIComponent(id)}`;
-      }
-      return u.toString();
-    }
-    let manifest = null;
-    async function loadManifest() {
-      $('downloadStatus').textContent = 'Читаю update-manifest.json…';
-      try {
-        const res = await fetch(MANIFEST_URL, { cache: 'no-store', headers: { accept: 'application/json' } });
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        const data = await res.json();
-        if (!/^\d+\.\d+\.\d+(?:[-+][\w.-]+)?$/.test(String(data.version || ''))) throw new Error('Укажи корректное поле version в update-manifest.json.');
-        if (!isHttpsUrl(data.url)) throw new Error('Замени url в update-manifest.json на прямую HTTPS-ссылку установщика.');
-        manifest = data;
-        $('latestVersion').textContent = data.version;
-        $('downloadTitle').textContent = `${data.product || 'Deluxe Launcher'} ${data.version}`;
-        $('releaseNotes').textContent = data.notes || 'Доступен опубликованный релиз.';
-        $('downloadNotes').textContent = data.notes || 'Скачать опубликованную версию.';
-        $('downloadStatus').textContent = data.sha256 && /^[a-f0-9]{64}$/i.test(data.sha256) ? 'Манифест настроен · хеш опубликован' : 'Ссылка настроена, но SHA-256 ещё не опубликован';
-        $('downloadIntegrity').textContent = data.sha256 && /^[a-f0-9]{64}$/i.test(data.sha256) ? 'SHA-256 опубликован' : 'Нужен SHA-256';
-        $('downloadBtn').href = directDownloadUrl(data.url);
-        $('downloadBtn').setAttribute('download', data.filename || 'Deluxe-Launcher-Setup.exe');
-        $('downloadBtn').removeAttribute('aria-disabled');
-        $('downloadBtn').target = '_self';
-      } catch (e) {
-        manifest = null;
-        $('latestVersion').textContent = '—';
-        $('downloadStatus').textContent = `Настройка ещё не завершена: ${String(e.message || e)}`;
-        $('releaseNotes').textContent = 'Открой website/update-manifest.json и заполни версию, прямую HTTPS-ссылку и SHA-256.';
-        $('downloadBtn').href = '#download';
-        $('downloadBtn').setAttribute('aria-disabled', 'true');
-      }
-    }
-    $('downloadBtn').addEventListener('click', (e) => { if (!manifest) { e.preventDefault(); $('downloadStatus').textContent = 'Сначала заполни update-manifest.json.'; } });
-    $('reloadManifestBtn').addEventListener('click', () => { void loadManifest(); });
-    $('year').textContent = new Date().getFullYear();
+  <header class="topbar">
+    <div class="shell topbar-inner">
+      <a class="brand" href="#top" aria-label="Deluxe Launcher — наверх">
+        <img src="assets/deluxe-icon.webp" alt="" width="44" height="44">
+        <span class="brand-name">DELUXE LAUNCHER<small>MINECRAFT • JAVA EDITION</small></span>
+      </a>
+      <nav aria-label="Главное меню">
+        <a href="#features">Возможности</a>
+        <a href="#security">Безопасность</a>
+        <a href="#faq">Вопросы</a>
+        <a id="supportNavBtn" href="#support" style="color: var(--cyan);">☕ Поддержать</a>
+        <a class="nav-download" href="#download">Скачать ↓</a>
+      </nav>
+    </div>
+  </header>
 
-    async function loadOnlineCount() {
-      if (!isHttpsUrl(COMMUNITY_API_BASE)) return;
+  <main id="top">
+    <section class="shell hero">
+      <div class="hero-content">
+        <span class="eyebrow"><span class="dot"></span> Зима, космос и Minecraft</span>
+        <h1>Твой Minecraft.<br><span class="gradient">Твой стиль.</span></h1>
+        <p class="lead">Deluxe Launcher собирает запуск игры в одном красивом месте: версии, Java, Fabric, профили и каталог клиентов — без лишней суеты.</p>
+        <div class="actions">
+          <a id="downloadBtn" class="btn btn-primary" href="#download">↓ Скачать Deluxe Launcher</a>
+          <button id="supportHeroBtn" class="btn">☕ Поддержать проект</button>
+        </div>
+        <p class="micro-note">Windows x64 · Исходный код открыт для ознакомления · Java Runtime Setup</p>
+        <div class="trust-row" aria-label="Ключевые функции">
+          <span class="pill">✦ Java 8 / 17 / 21 / 25</span>
+          <span class="pill">❄ Анимированный интерфейс</span>
+          <span class="pill">⬡ Fabric и моды</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="content-section" id="features">
+      <div class="shell">
+        <div class="section-top reveal">
+          <span class="eyebrow">✦ Возможности</span>
+          <h2>Всё нужное — <span class="gradient">под рукой</span></h2>
+          <p>Настрой запуск один раз и выбирай профиль, который подходит под твою игру.</p>
+        </div>
+        <div class="grid">
+          <article class="card reveal"><div class="icon">☕</div><h3>Java без головной боли</h3><p>Установка Eclipse Temurin JDK 8, 17, 21 и 25 через настройки. Подходящая версия Java выбирается с учётом версии Minecraft.</p></article>
+          <article class="card reveal"><div class="icon">⬡</div><h3>Fabric и зависимости</h3><p>Лаунчер подготавливает Fabric и нужные библиотеки. Fabric API и Fabric Language Kotlin ставятся для поддерживаемых профилей, когда они требуются.</p></article>
+          <article class="card reveal"><div class="icon">▦</div><h3>Каталог клиентов</h3><p>Профили разных клиентов собраны в одном списке. Выбирай поддерживаемую версию игры и смотри параметры перед запуском.</p></article>
+          <article class="card reveal"><div class="icon">✧</div><h3>Космический интерфейс</h3><p>Зимняя галактика на фоне, падающий снег, светящиеся карточки и анимированный логотип. Эффекты можно адаптировать под производительность ПК.</p></article>
+          <article class="card reveal"><div class="icon">⚙</div><h3>Оптимизация по желанию</h3><p>Дополнительные совместимые моды оптимизации запрашиваются только при выборе соответствующей опции, а не добавляются без спроса.</p></article>
+          <article class="card reveal"><div class="icon">☷</div><h3>Профили и ресурс-паки</h3><p>Раздельные профили помогают не смешивать моды разных клиентов. Поддерживается поиск и установка ресурс-паков.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="content-section">
+      <div class="shell card wide-card reveal">
+        <div>
+          <span class="eyebrow">Быстрый старт</span>
+          <h2>От установки<br>до <span class="gradient">игры в пару шагов</span></h2>
+          <p>При первом запуске потребуется интернет, чтобы загрузить саму игру и выбранные компоненты. После установки файлов повторный запуск обычно быстрее.</p>
+        </div>
+        <div class="steps">
+          <div class="step"><b>Шаг 01</b><strong>Установи лаунчер</strong><span>Скачай установщик из официального GitHub Release проекта.</span></div>
+          <div class="step"><b>Шаг 02</b><strong>Выбери профиль</strong><span>Укажи версию Minecraft, клиент и необязательные моды оптимизации.</span></div>
+          <div class="step"><b>Шаг 03</b><strong>Запусти игру</strong><span>Лаунчер проверит Java и скачает нужные файлы при необходимости.</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="content-section" id="security">
+      <div class="shell card wide-card reveal">
+        <div>
+          <span class="eyebrow">Понятная безопасность</span>
+          <h2>Без скрытых сюрпризов.<br><span class="gradient">С понятными настройками.</span></h2>
+          <p>Безопасность важнее громких обещаний. Мы описываем функции прямо и оставляем возможность изучить код перед запуском.</p>
+          <div class="warning">Важное уточнение: открытый исходный код сам по себе не является независимым аудитом и не гарантирует абсолютную безопасность. Скачивай только из релизов своего проверенного репозитория.</div>
+        </div>
+        <div>
+          <ul class="security-list">
+            <li><span class="check">✓</span><span>В опубликованном исходном проекте не предусмотрены функции скрытого майнинга, кейлоггинга или кражи паролей.</span></li>
+            <li><span class="check">✓</span><span>Файлы Minecraft, Java и выбранных модификаций загружаются для установки игровых профилей.</span></li>
+            <li><span class="check">✓</span><span>Discord Rich Presence и онлайн-счётчик являются дополнительными функциями и выключены, пока пользователь их не включит.</span></li>
+            <li><span class="check">✓</span><span>Webhook Discord должен храниться на сервере, а не внутри общедоступного кода лаунчера.</span></li>
+            <li><span class="check">✓</span><span>Перед публикацией релиза можно приложить SHA-256 установщика и результаты независимой антивирусной проверки.</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="content-section" id="faq">
+      <div class="shell">
+        <div class="section-top reveal"><span class="eyebrow">FAQ</span><h2>Коротко о главном</h2></div>
+        <div class="faq reveal">
+          <details><summary>Где взять рабочую ссылку на скачивание?</summary><p>Создай GitHub Release в своём репозитории, приложи готовый установщик и замени переменную <code>DOWNLOAD_URL</code> внизу этого <code>index.html</code> на прямую ссылку на файл из Assets релиза.</p></details>
+          <details><summary>Нужно ли вручную скачивать Java?</summary><p>Нет, если оставлена автоматическая настройка и доступен интернет: лаунчер может скачать поддерживаемую версию Temurin JDK. Также можно указать путь к уже установленной Java в настройках.</p></details>
+          <details><summary>Почему Windows может предупреждать о файле?</summary><p>Новый или неподписанный установщик иногда вызывает предупреждение SmartScreen. Это не доказывает ни наличие, ни отсутствие вируса. Проверь источник, подпись, хэш и результаты независимой проверки до запуска.</p></details>
+          <details><summary>Работает ли сайт без внешних библиотек?</summary><p>Да. Страница использует встроенные HTML, CSS и JavaScript, локальные изображения в папке assets и не требует внешних CDN или веб-шрифтов.</p></details>
+        </div>
+      </div>
+    </section>
+
+    <section class="content-section" id="download">
+      <div class="shell card final-cta reveal">
+        <span class="eyebrow">Готов к старту?</span>
+        <h2>Встретимся <span class="gradient">в игре.</span></h2>
+        <p>Скачай Deluxe Launcher из официального релиза проекта. Если ссылка ещё не настроена, сначала добавь установщик в GitHub Releases и укажи адрес в коде сайта.</p>
+        <div class="actions" style="justify-content:center">
+          <a id="downloadBtnBottom" class="btn btn-primary" href="#download">↓ Скачать для Windows</a>
+          <a id="sourceBtn" class="btn" href="#download">Открыть исходный код</a>
+        </div>
+        <p class="micro-note">Не скачивай установщики с неизвестных зеркал или из случайных комментариев.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="shell footer-inner">
+      <span>© <span id="year"></span> Deluxe Launcher · Неофициальный лаунчер для Minecraft.</span>
+      <div class="footer-links"><a id="footerSource" href="#top">Исходный код</a><a href="#security">Безопасность</a><a href="#top">Наверх ↑</a></div>
+    </div>
+  </footer>
+
+  <!-- Модальное окно поддержки (нативный баннер по клику) -->
+  <div class="modal-overlay" id="supportModal" role="dialog" aria-modal="true">
+    <div class="modal-card">
+      <h3>Поддержать Deluxe Launcher</h3>
+      <p>Спасибо, что помогаешь развитию проекта! Просмотр этого блока помогает нам оплачивать хостинг и обновления.</p>
+      
+      <div class="ad-container" id="adSlot">
+        <!-- Контейнер и скрипт нативного баннера Adsterra -->
+        <div id="container-1d1455a7b078c421db1072b322cd6b4f"></div>
+      </div>
+      
+      <div class="modal-timer" id="modalTimer">Подождите пару секунд...</div>
+      <button class="btn btn-primary modal-close-btn" id="modalCloseBtn" disabled>Спасибо, закрыть окно</button>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script>
+    // ====== НАСТРОЙКИ САЙТА ======
+    const DOWNLOAD_URL = "PASTE_GITHUB_RELEASE_DOWNLOAD_URL_HERE";
+    const SOURCE_URL = "https://github.com/YOUR-USERNAME/YOUR-REPOSITORY";
+    // =============================
+
+    const isRealUrl = (value) => {
       try {
-        const r = await fetch(`${COMMUNITY_API_BASE.replace(/\/$/, '')}/online`, { cache: 'no-store' });
-        if (!r.ok) throw new Error('offline');
-        const d = await r.json();
-        $('onlineCount').textContent = Number.isFinite(Number(d.count)) ? String(Math.max(0, Number(d.count))) : '—';
-        $('onlineCaption').textContent = 'Активные добровольно подключённые установки лаунчера';
-      } catch { $('onlineCount').textContent = '—'; $('onlineCaption').textContent = 'Онлайн временно недоступен'; }
+        const url = new URL(value);
+        return url.protocol === "https:" && !/YOUR-USERNAME|YOUR-REPOSITORY|PASTE_/i.test(value);
+      } catch { return false; }
+    };
+
+    const toast = document.getElementById("toast");
+    let toastTimer;
+    function showToast(message) {
+      toast.textContent = message;
+      toast.classList.add("show");
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => toast.classList.remove("show"), 5200);
     }
-    let chatActive = false, chatTimer = null, chatCursor = 0, chatBusy = false;
-    function showChatStatus(t) { $('chatStatus').textContent = t; }
-    function appendMessages(messages) {
-      const feed = $('chatFeed');
-      if (messages.length && feed.querySelector('.chat-welcome')) feed.replaceChildren();
-      for (const msg of messages) {
-        const id = Number(msg.id) || 0;
-        if (id && id <= chatCursor) continue;
-        const wrap = document.createElement('article'); wrap.className = 'message';
-        const avatar = document.createElement('span'); avatar.className = 'avatar'; avatar.textContent = (String(msg.nickname || 'А')[0] || 'А').toUpperCase();
-        const bodyWrap = document.createElement('div');
-        const meta = document.createElement('div'); meta.className = 'message-meta';
-        const nick = document.createElement('span'); nick.className = 'nick'; nick.textContent = String(msg.nickname || 'Аноним').slice(0,20);
-        const time = document.createElement('time'); time.className='time'; time.textContent = new Date(Number(msg.createdAt || msg.created_at || 0)*1000).toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
-        meta.append(nick,time); const text = document.createElement('div'); text.className='body'; text.textContent = String(msg.message || '').slice(0,500); bodyWrap.append(meta,text); wrap.append(avatar,bodyWrap); feed.append(wrap); if(id) chatCursor=Math.max(chatCursor,id);
+
+    function connectLink(id, url, label) {
+      const element = document.getElementById(id);
+      if (!element) return;
+      if (isRealUrl(url)) {
+        element.href = url;
+        if (id.toLowerCase().includes("source") || id.toLowerCase().includes("footer")) {
+          element.target = "_blank";
+          element.rel = "noopener noreferrer";
+        }
+      } else {
+        element.href = "#download";
+        element.addEventListener("click", (event) => {
+          event.preventDefault();
+          showToast(`Ссылка ещё не настроена. Открой index.html и укажи ${label} в блоке «НАСТРОЙКИ САЙТА» внизу файла.`);
+        });
       }
-      while (feed.querySelectorAll('.message').length > 100) feed.querySelector('.message')?.remove();
-      feed.scrollTop = feed.scrollHeight;
     }
-    async function pollChat() {
-      if (!chatActive || document.hidden || chatBusy) return;
-      if (!isHttpsUrl(COMMUNITY_API_BASE)) { showChatStatus('Настрой COMMUNITY_API_BASE внизу index.html.'); return; }
-      chatBusy=true;
-      try { const r=await fetch(`${COMMUNITY_API_BASE.replace(/\/$/,'')}/chat/messages?after=${chatCursor}`,{cache:'no-store'}); const d=await r.json(); if(!r.ok) throw new Error(d.error || `HTTP ${r.status}`); appendMessages(d.messages || []); showChatStatus('Подключён · обновление каждые 5 секунд.'); }
-      catch(e) { showChatStatus(`Чат недоступен: ${String(e.message || e)}`); }
-      finally { chatBusy=false; }
+    connectLink("downloadBtn", DOWNLOAD_URL, "DOWNLOAD_URL");
+    connectLink("downloadBtnBottom", DOWNLOAD_URL, "DOWNLOAD_URL");
+    connectLink("sourceBtn", SOURCE_URL, "SOURCE_URL");
+    connectLink("footerSource", SOURCE_URL, "SOURCE_URL");
+    document.getElementById("year").textContent = new Date().getFullYear();
+
+    // Логика модального окна поддержки и динамической загрузки нативного баннера
+    const supportModal = document.getElementById("supportModal");
+    const supportHeroBtn = document.getElementById("supportHeroBtn");
+    const supportNavBtn = document.getElementById("supportNavBtn");
+    const modalCloseBtn = document.getElementById("modalCloseBtn");
+    const modalTimer = document.getElementById("modalTimer");
+
+    let adLoaded = false;
+
+    function openSupportModal(e) {
+      if (e) e.preventDefault();
+      supportModal.classList.add("active");
+      
+      // Загружаем скрипт нативного баннера Adsterra только при открытии окна
+      if (!adLoaded) {
+        adLoaded = true;
+        const script = document.createElement("script");
+        script.async = true;
+        script.setAttribute("data-cfasync", "false");
+        script.src = "https://bauval.org/21/1d1455a7b078c421db1072b322cd6b4f";
+        document.body.appendChild(script);
+      }
+
+      // Таймер на 4 секунды
+      let timeLeft = 4;
+      modalCloseBtn.disabled = true;
+      modalTimer.textContent = `Осталось секунд: ${timeLeft}`;
+      
+      const countdown = setInterval(() => {
+        timeLeft--;
+        if (timeLeft > 0) {
+          modalTimer.textContent = `Осталось секунд: ${timeLeft}`;
+        } else {
+          clearInterval(countdown);
+          modalTimer.textContent = "Спасибо за поддержку проекта! ✨";
+          modalCloseBtn.disabled = false;
+        }
+      }, 1000);
     }
-    function openChat() { if(chatActive)return; chatActive=true; $('chatArea').classList.remove('hidden'); $('openChatBtn').textContent='✓ Чат открыт'; showChatStatus('Подключаюсь…'); void pollChat(); chatTimer=setInterval(()=>void pollChat(),5000); }
-    function closeChat() { chatActive=false; if(chatTimer)clearInterval(chatTimer); chatTimer=null; $('chatArea').classList.add('hidden'); $('openChatBtn').textContent='💬 Открыть чат'; showChatStatus('Чат закрыт: сетевые запросы не выполняются.'); }
-    $('openChatBtn').addEventListener('click',openChat); $('closeChatBtn').addEventListener('click',closeChat);
-    document.addEventListener('visibilitychange',()=>{if(document.hidden){if(chatTimer)clearInterval(chatTimer);chatTimer=null;}else if(chatActive&&!chatTimer)chatTimer=setInterval(()=>void pollChat(),5000);});
-    $('chatForm').addEventListener('submit',async(e)=>{e.preventDefault();if(!chatActive)return;if(!isHttpsUrl(COMMUNITY_API_BASE)){showChatStatus('Настрой COMMUNITY_API_BASE в index.html.');return;}const message=$('chatMessage').value.trim();const nickname=$('chatNickname').value.trim();const anonymous=$('chatAnonymous').checked;if(!message)return;if(message.length>500){showChatStatus('Максимум 500 символов.');return;}if(!anonymous&&!/^[\p{L}\p{N}_-]{2,20}$/u.test(nickname)){showChatStatus('Ник: 2–20 букв, цифр, дефисов или подчёркиваний.');return;}$('chatSendBtn').disabled=true;showChatStatus('Отправляю…');try{const r=await fetch(`${COMMUNITY_API_BASE.replace(/\/$/,'')}/chat/messages`,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({nickname,anonymous,message})});const d=await r.json();if(!r.ok)throw new Error(d.error||`HTTP ${r.status}`);appendMessages([d.message]);$('chatMessage').value='';showChatStatus('Отправлено и передано на серверный Discord webhook.');}catch(err){showChatStatus(`Не отправлено: ${String(err.message||err)}`);}finally{$('chatSendBtn').disabled=false;}});
-    void loadManifest(); if (isHttpsUrl(COMMUNITY_API_BASE)) void loadOnlineCount();
+
+    function closeSupportModal() {
+      supportModal.classList.remove("active");
+    }
+
+    supportHeroBtn.addEventListener("click", openSupportModal);
+    supportNavBtn.addEventListener("click", openSupportModal);
+    modalCloseBtn.addEventListener("click", closeSupportModal);
+    
+    // Закрытие по клику вне карточки
+    supportModal.addEventListener("click", (e) => {
+      if (e.target === supportModal && !modalCloseBtn.disabled) {
+        closeSupportModal();
+      }
+    });
+
+    // Легкий снег
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (!prefersReducedMotion) {
+      const makeSnow = () => {
+        if (document.hidden) return;
+        const flake = document.createElement("span");
+        flake.className = "snow";
+        flake.setAttribute("aria-hidden", "true");
+        flake.textContent = Math.random() > .72 ? "❄" : "·";
+        const size = 7 + Math.random() * 12;
+        flake.style.left = `${Math.random() * 100}vw`;
+        flake.style.fontSize = `${size}px`;
+        flake.style.opacity = `${.22 + Math.random() * .6}`;
+        flake.style.setProperty("--drift", `${Math.random() * 160 - 80}px`);
+        const duration = 8 + Math.random() * 12;
+        flake.style.animationDuration = `${duration}s`;
+        document.body.appendChild(flake);
+        setTimeout(() => flake.remove(), duration * 1000 + 300);
+      };
+      for (let i = 0; i < 20; i++) setTimeout(makeSnow, i * 120);
+      setInterval(makeSnow, 520);
+    }
+
+    // Появление секций при скролле
+    const revealItems = document.querySelectorAll(".reveal");
+    if ("IntersectionObserver" in window && !prefersReducedMotion) {
+      const observer = new IntersectionObserver((entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("visible");
+            observer.unobserve(entry.target);
+          }
+        }
+      }, { threshold: .12 });
+      revealItems.forEach((item) => observer.observe(item));
+    } else {
+      revealItems.forEach((item) => item.classList.add("visible"));
+    }
   </script>
 </body>
 </html>
